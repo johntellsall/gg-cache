@@ -1,2 +1,5 @@
 flask==1.0.2
 redis==3.0.1
+
+# TODO development:
+ipdb
