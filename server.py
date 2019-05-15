@@ -74,5 +74,7 @@ def set(key):
 ### Main
 ########
 if __name__ == '__main__':
+    # import ipdb; ipdb.set_trace()
+
     app.run(host='0.0.0.0',
             port=os.getenv("SERVER_PORT", 5000))
