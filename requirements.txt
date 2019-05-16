@@ -4,3 +4,4 @@ redis==3.0.1
 # TODO development:
 ipdb
 pytest
+requests
