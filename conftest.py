@@ -1,13 +1,13 @@
 import pytest
 
-from .. import server # XXXX check this
+import server # XXXX check this
 
 @pytest.fixture(scope='module')
 def test_client():
     if 0:
         flask_app = create_app('flask_test.cfg')
     else:
-        app = server.app
+        flask_app = server.app
 
     # Flask provides a way to test your application by exposing the Werkzeug test Client
     # and handling the context locals for you.
