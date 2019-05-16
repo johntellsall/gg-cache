@@ -25,5 +25,5 @@ def test_setget(test_client):
     assert response.status_code == 200
 
     response = test_client.get(f'/get/{key}')
-    assert 0, response
-    assert response.status_code == 404
+    assert response.status_code == 200
+    assert response.json == {'value': value}

@@ -61,7 +61,6 @@ def get(key):
 
 @app.route('/set/<key>', methods=['POST'])
 def set(key):
-    import ipdb; ipdb.set_trace()
     try:
         payload = request.get_json(force=True)
         if 'value' in payload:
