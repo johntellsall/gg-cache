@@ -1,0 +1,16 @@
+kind: pipeline
+name: default
+
+steps:
+- name: docker  
+  image: plugins/docker
+  settings:
+    username: kevinbacon
+    password: pa55word
+    repo: johntellsall/gg-cache
+    tags: latest
+  publish:
+    image: plugins/docker
+    repo: johntellsall/gg-cache
+    when:
+      branch: master

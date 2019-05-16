@@ -1,5 +1,7 @@
-# all: build run
+all: build run
 
+build:
+	docker-compose build
 
 dc-run:
 	docker-compose build
