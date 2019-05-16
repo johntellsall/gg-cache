@@ -5,12 +5,11 @@ steps:
 - name: docker  
   image: plugins/docker
   settings:
-    username: kevinbacon
-    password: pa55word
     repo: johntellsall/gg-cache
     tags: latest
-  publish:
-    image: plugins/docker
-    repo: johntellsall/gg-cache
-    when:
-      branch: master
+    username:
+      from_secret: dockerhub_username
+    password:
+      from_secret: dockerhub_password
+    # when:
+    #   branch: master
