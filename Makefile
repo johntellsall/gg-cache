@@ -1,12 +1,16 @@
 all: build run
 
-build:
+build dc-build:
 	docker-compose build
 
 dc-run:
 	docker-compose build
 	docker-compose run --service caching-service
-	
+
+dc-shell: dc-build
+	docker-compose build
+	docker-compose run --service caching-service bash
+
 # build:
 # 	docker build -t caching-service .
 # run:

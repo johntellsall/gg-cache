@@ -4,9 +4,13 @@ from redis import Redis
 from redis import ConnectionError
 
 REDIS_URL=os.getenv("REDIS_URL")
-app = Flask(__name__)
 redis = Redis(REDIS_URL)
-app.logger.debug(REDIS_URL)
+
+def create_app():
+    app = Flask(__name__)
+    app.logger.debug(REDIS_URL)
+    return app
+app = create_app()
 
 ##################
 ### Error handling

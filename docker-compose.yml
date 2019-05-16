@@ -1,4 +1,4 @@
-version: '3.6'  
+version: '3.6'
 services:
 
   caching-service:
@@ -10,6 +10,8 @@ services:
       - REDIS_URL=redis
     ports:
       - "5000:5000"
+    volumes:
+      - ./:/code/
 
   redis:
     image: redis:3.2-alpine
