@@ -27,3 +27,17 @@ def test_setget(test_client):
     response = test_client.get(f'/get/{key}')
     assert response.status_code == 200
     assert response.json == {'value': value}
+
+def test_mget(test_client):
+    keys = [make_random(), make_random()]
+    # TODO regenerate if keys same
+    values = [make_random(), make_random()]
+
+    response = test_client.post(f'/set/{keys[0]}', json={'value': values[0]})
+    assert response.status_code == 200
+    response = test_client.post(f'/set/{keys[1]}', json={'value': values[1]})
+    assert response.status_code == 200
+
+    response = test_client.get(f'/mget/' + ','.join(keys))
+    assert response.status_code == 200
+    assert 0, response.json
