@@ -39,7 +39,6 @@ def handle_invalid_usage(error):
 ################
 @app.route('/')
 def health():
-    import ipdb; ipdb.set_trace()
     try:
         redis_status = redis.ping()
         status = "up"
