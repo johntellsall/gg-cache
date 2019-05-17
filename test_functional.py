@@ -28,6 +28,12 @@ def test_setget(test_client):
     assert response.status_code == 200
     assert response.json == {'value': value}
 
+def test_mget_no_values(test_client):
+    keys = [make_random(), make_random()]
+    response = test_client.get(f'/mget/' + ','.join(keys))
+    assert response.status_code == 200
+    assert response.json == {'value': [None, None]}
+
 def test_mget(test_client):
     keys = [make_random(), make_random()]
     # TODO regenerate if keys same
@@ -40,4 +46,4 @@ def test_mget(test_client):
 
     response = test_client.get(f'/mget/' + ','.join(keys))
     assert response.status_code == 200
-    assert 0, response.json
+    assert response.json == {'value': values}

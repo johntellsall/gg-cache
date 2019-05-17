@@ -59,6 +59,18 @@ def get(key):
             message="Could not find key '{}' in cache".format(key),
             status_code=404)
 
+@app.route('/mget/<keys>')
+def mget(keys):
+    """
+    lookup each key, return each value.
+    Keys comma-separated.
+    Missing values returned as Nones - this method never gives 404.
+    """
+    values = redis.mget(keys.split(','))
+    values = [val and val.decode('utf-8') for val in values]
+    app.logger.debug('mget(%s) = %s', keys, values)
+    return jsonify(value=values)
+
 @app.route('/set/<key>', methods=['POST'])
 def set(key):
     try:
@@ -73,6 +85,7 @@ def set(key):
         raise e
     except Exception as e:
         raise ApiException(str(e))
+
 ########
 ### Main
 ########
