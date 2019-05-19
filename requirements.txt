@@ -5,3 +5,4 @@ redis==3.0.1
 ipdb
 pytest
 requests
+coverage

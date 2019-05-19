@@ -1,22 +1,19 @@
 import pytest
 
-import server # XXXX check this
+import server
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='function')
 def test_client():
-    if 0:
-        flask_app = create_app('flask_test.cfg')
-    else:
-        flask_app = server.app
+    flask_app = server.app
 
-    # Flask provides a way to test your application by exposing the Werkzeug test Client
-    # and handling the context locals for you.
     testing_client = flask_app.test_client()
 
-    # Establish an application context before running the tests.
+    # create a clean App
     ctx = flask_app.app_context()
     ctx.push()
+    # zap all state (e.g. Redis)
+    server.redis.flushall()
 
-    yield testing_client  # this is where the testing happens!
+    yield testing_client
 
     ctx.pop()
