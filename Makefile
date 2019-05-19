@@ -12,6 +12,8 @@ dc-shell: dc-build
 test: dc-build
 	docker-compose run caching-service pytest
 
+deploy:
+	git push heroku master
 # build:
 # 	docker build -t caching-service .
 # run:
