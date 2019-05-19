@@ -13,7 +13,25 @@ test: dc-build
 	docker-compose run caching-service pytest
 
 deploy:
-	git push heroku master
+	git push
+	# heroku container:push web
+
+IMAGE=cecdf66170b3
+IMAGE=latest
+HEROKU_APP=gg-cache
+HEROKU_PROCESS_TYPE=web
+d-heroku:
+	# login to Heroku's registry w/ given token 
+	docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
+	# push locally-build image to Heroku registry
+	docker tag gg-cache_caching-service registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
+	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
+
+
+# build image locally, push to Heroku registry
+x-deploy:
+	heroku container:push web
+
 # build:
 # 	docker build -t caching-service .
 # run:
