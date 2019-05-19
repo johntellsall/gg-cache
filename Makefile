@@ -3,13 +3,14 @@ all: build run
 build dc-build:
 	docker-compose build
 
-dc-run:
-	docker-compose build
+dc-run:  dc-build
 	docker-compose run --service caching-service
 
 dc-shell: dc-build
-	docker-compose build
 	docker-compose run --service caching-service bash
+
+test: dc-build
+	docker-compose run caching-service pytest
 
 # build:
 # 	docker build -t caching-service .
