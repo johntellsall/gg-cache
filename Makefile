@@ -4,7 +4,7 @@ build dc-build:
 	docker-compose build
 
 dc-run:  dc-build
-	docker-compose run --service caching-service
+	docker-compose run --service caching-service python3 server.py
 
 dc-shell: dc-build
 	docker-compose run --service caching-service bash

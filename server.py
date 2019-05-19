@@ -9,6 +9,10 @@ redis = Redis(REDIS_URL)
 def create_app():
     app = Flask(__name__)
     app.logger.debug(REDIS_URL)
+    try:
+        redis.ping()
+    except ConnectionError as exc:
+        app.logger.critical("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
     return app
 app = create_app()
 
