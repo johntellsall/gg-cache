@@ -62,7 +62,7 @@ def get(key):
 @app.route('/mget/<keys>')
 def mget(keys):
     """
-    lookup each key, return each value.
+    lookup each key, return list of values.
     Keys comma-separated.
     Missing values returned as Nones - this method never gives 404.
     """
