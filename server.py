@@ -98,6 +98,8 @@ def set(key):
 ########
 if __name__ == '__main__':
     # PORT is given by Heroku, SERVER_PORT is XXX TBD
-    port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000)
+    port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
     app.logger.info('starting: port=%s', port)
-    app.run(host='0.0.0.0', port=port)
+    # app.run(host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT'))
+
