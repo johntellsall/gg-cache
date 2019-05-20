@@ -23,7 +23,7 @@ HEROKU_PROCESS_TYPE=web
 d-heroku:
 	# login to Heroku's registry w/ given token 
 	docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
-	# push locally-build image to Heroku registry
+	# push locally-built image to Heroku registry
 	docker tag gg-cache_caching-service registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 
