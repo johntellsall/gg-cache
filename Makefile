@@ -26,7 +26,8 @@ d-heroku:
 	# push locally-built image to Heroku registry
 	docker tag gg-cache_caching-service registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
-
+	heroku container:release web --verbose
+	
 zoot:
 	echo registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 
