@@ -9,7 +9,7 @@ redis = Redis(REDIS_URL)
 def create_app():
     app = Flask(__name__)
     app.logger.debug(REDIS_URL)
-    app.logger.info('beer 612')
+    app.logger.info('beer 626')
     # try:
     #     redis.ping()
     # except ConnectionError as exc:
@@ -97,7 +97,7 @@ def set(key):
 ### Main
 ########
 if __name__ == '__main__':
-    # import ipdb; ipdb.set_trace()
-
-    app.run(host='0.0.0.0',
-            port=os.getenv("SERVER_PORT", 5000))
+    # PORT is given by Heroku, SERVER_PORT is XXX TBD
+    port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000)
+    app.logger.info('starting: port=%s', port)
+    app.run(host='0.0.0.0', port=port)
