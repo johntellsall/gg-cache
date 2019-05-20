@@ -3,7 +3,7 @@ from flask import Flask, jsonify, request
 from redis import Redis
 from redis import ConnectionError
 
-REDIS_URL=os.getenv("REDIS_URL")
+REDIS_URL = os.getenv("REDIS_URL")
 redis = Redis(REDIS_URL)
 
 def create_app():
