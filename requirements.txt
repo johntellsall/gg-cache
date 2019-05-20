@@ -6,3 +6,4 @@ ipdb
 pytest
 requests
 coverage
+gunicorn

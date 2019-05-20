@@ -12,11 +12,8 @@ dc-shell: dc-build
 test: dc-build
 	docker-compose run caching-service pytest
 
-deploy:
-	git push
-	# heroku container:push web
+deploy: d-heroku
 
-IMAGE=cecdf66170b3
 IMAGE=latest
 HEROKU_APP=gg-cache
 HEROKU_PROCESS_TYPE=web
@@ -32,6 +29,7 @@ zoot:
 	echo registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 
 # build image locally, push to Heroku registry
+# (doesn't require token)
 x-deploy:
 	heroku container:push web
 
