@@ -13,6 +13,8 @@ def create_app():
         redis.ping()
     except ConnectionError as exc:
         app.logger.critical("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
+    except Exception as exc:
+        app.logger.critical("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
     return app
 app = create_app()
 
