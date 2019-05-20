@@ -27,6 +27,8 @@ d-heroku:
 	docker tag gg-cache_caching-service registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 
+zoot:
+	echo registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 
 # build image locally, push to Heroku registry
 x-deploy:
