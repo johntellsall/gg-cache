@@ -12,7 +12,7 @@ RUN pip3 install -qr /tmp/requirements.txt
 ADD requirements.txt *.py /code/
 
 # Heroku runs as non-root
-RUN adduser -D ggcache
+RUN useradd -ms /bin/bash ggcache
 USER ggcache 
 
 # ENTRYPOINT ["python"]
