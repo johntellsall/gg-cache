@@ -2,7 +2,7 @@ all: build run
 
 run-simple: killall
 	docker build -t caching-service .
-	docker run caching-service
+	docker run -p 5000:5000 caching-service
 
 run: killall
 
