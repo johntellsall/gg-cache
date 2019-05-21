@@ -5,17 +5,21 @@ from redis import ConnectionError
 
 REDIS_URL = os.getenv("REDIS_URL")
 redis = Redis(REDIS_URL)
+port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
 
 def create_app():
     app = Flask(__name__)
-    app.logger.debug(REDIS_URL)
-    app.logger.error('beer 644')
-    # try:
-    #     redis.ping()
-    # except ConnectionError as exc:
-    #     app.logger.critical("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
-    # except Exception as exc:
-    #     app.logger.critical("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
+    app.logger.info('Config: %s', {
+        'REDIS_URL': REDIS_URL, 
+        "SERVER_PORT": os.getenv("SERVER_PORT"),
+        "PORT": os.getenv("PORT")
+    })
+    try:
+        redis.ping()
+    except ConnectionError as exc:
+        app.logger.error("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
+    except Exception as exc:
+        app.logger.error("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
     return app
 app = create_app()
 
