@@ -5,17 +5,15 @@ from redis import Redis
 from redis import ConnectionError
 
 REDIS_URL = os.getenv("REDIS_URL")
-redis = Redis(REDIS_URL)
-# PORT is given by Heroku, SERVER_PORT is by specification
-port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
 
-def check_redis(app):
-    try:
-        redis.ping()
-    except ConnectionError as exc:
-        app.logger.error("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
-    except Exception as exc:
-        app.logger.error("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
+
+def connect_redis(url):
+    host,port = url,None
+    if url and ':' in url:
+        host,port = url.split(':')
+        port = int(port)
+    redis = Redis(host=host, port=port or 6379)
+    return redis
 
 def create_app():
     app = Flask(__name__)
@@ -28,7 +26,26 @@ def create_app():
     })
     return app
 
+##################
+## Global objects: app, redis
+##################
+redis = connect_redis(REDIS_URL)
 app = create_app()
+
+def get_port():
+    # PORT is given by Heroku, SERVER_PORT is by specification
+    port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
+    return port
+
+def check_redis():
+    try:
+        redis.ping()
+    except ConnectionError as exc:
+        app.logger.error("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
+    except Exception as exc:
+        app.logger.critical("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
+
+
 
 ##################
 ### Error handling
@@ -108,6 +125,7 @@ def set(key):
 ### Main
 ########
 if __name__ == '__main__':
+    port = get_port()
     app.logger.info('starting: port=%s', port)
+    check_redis()
     app.run(debug=True, host='0.0.0.0', port=port)
-
