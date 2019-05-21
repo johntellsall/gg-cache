@@ -1,5 +1,15 @@
 all: build run
 
+run-simple: killall
+	docker build -t caching-service .
+	docker run caching-service
+
+run: killall
+
+killall:
+	docker-compose down
+	docker ps -q | xargs −−no−run−if−empty docker kill
+
 build dc-build:
 	docker-compose build
 
