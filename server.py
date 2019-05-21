@@ -1,26 +1,33 @@
 import os
+from logging.config import dictConfig
 from flask import Flask, jsonify, request
 from redis import Redis
 from redis import ConnectionError
 
 REDIS_URL = os.getenv("REDIS_URL")
 redis = Redis(REDIS_URL)
+# PORT is given by Heroku, SERVER_PORT is by specification
 port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
 
-def create_app():
-    app = Flask(__name__)
-    app.logger.info('Config: %s', {
-        'REDIS_URL': REDIS_URL, 
-        "SERVER_PORT": os.getenv("SERVER_PORT"),
-        "PORT": os.getenv("PORT")
-    })
+def check_redis(app):
     try:
         redis.ping()
     except ConnectionError as exc:
         app.logger.error("Redis: can't connect (REDIS_URL=%s)", REDIS_URL)
     except Exception as exc:
         app.logger.error("Redis: bad error (REDIS_URL=%s)", REDIS_URL)
+
+def create_app():
+    app = Flask(__name__)
+    # TODO: get logging config from external file
+    dictConfig({'version': 1, 'root': {'level': 'INFO'}})
+    app.logger.info('Config: %s', {
+        'REDIS_URL': REDIS_URL, 
+        "SERVER_PORT": os.getenv("SERVER_PORT"),
+        "PORT": os.getenv("PORT")
+    })
     return app
+
 app = create_app()
 
 ##################
@@ -101,9 +108,6 @@ def set(key):
 ### Main
 ########
 if __name__ == '__main__':
-    # PORT is given by Heroku, SERVER_PORT is XXX TBD
-    port = os.getenv("SERVER_PORT", os.getenv("PORT", 5000))
     app.logger.info('starting: port=%s', port)
-    # app.run(host='0.0.0.0', port=port)
-    app.run(debug=True, host='0.0.0.0', port=os.environ.get('PORT'))
+    app.run(debug=True, host='0.0.0.0', port=port)
 
