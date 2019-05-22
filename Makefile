@@ -42,12 +42,6 @@ deploy-simple:
 	heroku container:release web --verbose
 
 
-# build:
-# 	docker build -t caching-service .
-# run:
-# 	docker run redis:3.2-alpine
-# 	docker run caching-service
-
 # redis:
 # 	docker run -d -p 6379 redis:3.2-alpine
 
