@@ -1,18 +1,14 @@
 import os
 from logging.config import dictConfig
+from urllib.parse import urlparse
 from flask import Flask, jsonify, request
 from redis import Redis
 from redis import ConnectionError
 
 REDIS_URL = os.getenv("REDIS_URL")
 
-
 def connect_redis(url):
-    host,port = url,None
-    if url and ':' in url:
-        host,port = url.split(':')
-        port = int(port)
-    redis = Redis(host=host, port=port or 6379)
+    redis = Redis.from_url(url)
     return redis
 
 def create_app():

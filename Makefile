@@ -35,10 +35,12 @@ d-heroku:
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	heroku container:release web --verbose
 	
-# build image locally, push to Heroku registry
+# build image locally, then push to Heroku registry
 # (doesn't require token)
 deploy-simple:
 	heroku container:push web
+	heroku container:release web --verbose
+
 
 # build:
 # 	docker build -t caching-service .
