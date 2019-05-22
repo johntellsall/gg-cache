@@ -4,6 +4,7 @@ run-simple: killall
 	docker build -t caching-service .
 	docker run -p 5000:5000 caching-service
 
+# TODO
 run: killall
 
 killall:
@@ -24,7 +25,6 @@ test: dc-build
 
 deploy: d-heroku
 
-IMAGE=latest
 HEROKU_APP=gg-cache
 HEROKU_PROCESS_TYPE=web
 d-heroku:
@@ -35,12 +35,9 @@ d-heroku:
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	heroku container:release web --verbose
 	
-zoot:
-	echo registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
-
 # build image locally, push to Heroku registry
 # (doesn't require token)
-x-deploy:
+deploy-simple:
 	heroku container:push web
 
 # build:
