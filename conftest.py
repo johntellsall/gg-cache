@@ -4,6 +4,9 @@ import server
 
 @pytest.fixture(scope='function')
 def test_client():
+    """
+    create a Flask test client, and reset state (Redis) before each test
+    """
     flask_app = server.app
 
     testing_client = flask_app.test_client()
