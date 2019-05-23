@@ -1,3 +1,5 @@
+# conftest.py -- Pytest setup
+# 
 import pytest
 
 import server

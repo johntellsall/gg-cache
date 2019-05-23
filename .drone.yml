@@ -1,3 +1,5 @@
+# .drone.yml: build image and push to DockerHub
+
 kind: pipeline
 name: default
 

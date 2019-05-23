@@ -15,7 +15,7 @@ ADD requirements.txt *.py /code/
 
 EXPOSE 5000
 
-# Heroku runs as non-root
+# Heroku runs as non-root, do that here to help flush out bugs
 RUN useradd -ms /bin/bash ggcache
 USER ggcache 
 

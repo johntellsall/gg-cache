@@ -1,3 +1,5 @@
+# server.py: REST API to store and fetch short string values
+
 import os
 from logging.config import dictConfig
 from urllib.parse import urlparse

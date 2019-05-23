@@ -1,33 +1,50 @@
-all: build run
+# Makefile: develop app locally, or deploy to Heroku
 
-run-simple: killall
+# default -- run webapp (see README.md for how to access)
+all: run
+
+# HIGH LEVEL COMMANDS
+
+run: dc-run
+
+test: dc-build
+	docker-compose run caching-service -m pytest
+
+deploy: d-heroku
+
+
+# XX COMMANDS
+
+# run-noredis -- run service alone (no Redis nor Docker-Compose)
+run-noredis: killall
 	docker build -t caching-service .
 	docker run -p 5000:5000 caching-service
 
-# TODO
-run: killall
-
+# killall -- stop containers listed in docker-compose.yml and stragglers
 killall:
 	docker-compose down
 	docker ps -q | xargs −−no−run−if−empty docker kill
 
-build dc-build:
+# DOCKER-COMPOSE (DC) COMMANDS
+
+# dc-build -- build images specified in docker-compose.yml
+dc-build:
 	docker-compose build
 
+# dc-run -- build and run webapp in local terminal
 dc-run:  dc-build
-	docker-compose run --service caching-service python3 server.py
+	docker-compose run --service caching-service
 
-dc-shell: dc-build
-	docker-compose run --service caching-service bash
+# dc-shell: dc-build
+# 	docker-compose run --service caching-service bash
 
-test: dc-build
-	docker-compose run caching-service pytest
 
-deploy: d-heroku
+# DEPLOY (D) COMMANDS
 
 HEROKU_APP=gg-cache
 HEROKU_PROCESS_TYPE=web
 d-heroku:
+	echo "NOTE: create key with 'heroku authorizations:create', put in HEROKU_API_KEY"
 	# login to Heroku's registry w/ given token 
 	docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
 	# push locally-built image to Heroku registry
@@ -35,21 +52,8 @@ d-heroku:
 	docker push registry.heroku.com/${HEROKU_APP}/${HEROKU_PROCESS_TYPE}
 	heroku container:release web --verbose
 	
-# build image locally, then push to Heroku registry
+# d-simple -- build image locally, push to Heroku registry, deploy via image
 # (doesn't require token)
-deploy-simple:
+d-simple:
 	heroku container:push web
 	heroku container:release web --verbose
-
-
-# redis:
-# 	docker run -d -p 6379 redis:3.2-alpine
-
-
-# setup:
-# 	cat < /dev/null > .env
-# 	echo REDIS_URL= >> .env
-# run:
-# 	docker run --name my-redis -d redis
-# 	docker run --link my-redis:redis \
-# 	caching-service
