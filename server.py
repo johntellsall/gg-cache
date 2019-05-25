@@ -7,11 +7,10 @@ from flask import Flask, jsonify, request
 from redis import Redis
 from redis import ConnectionError
 
+##################
+## CONSTANTS
+##################
 REDIS_URL = os.getenv("REDIS_URL")
-
-def connect_redis(url):
-    redis = Redis.from_url(url)
-    return redis
 
 def create_app():
     app = Flask(__name__)
@@ -25,10 +24,21 @@ def create_app():
     return app
 
 ##################
-## Global objects: app, redis
+## Global object: app
+##################
+app = create_app()
+
+def connect_redis(url):
+    app.logger.info('Redis: %s', url)
+    if not (url and url.startswith('redis://')):
+        app.logger.warning('Redis URL may be malformed')
+    redis = Redis.from_url(url)
+    return redis
+
+##################
+## Global object: redis
 ##################
 redis = connect_redis(REDIS_URL)
-app = create_app()
 
 def get_port():
     # PORT is given by Heroku, SERVER_PORT is by specification

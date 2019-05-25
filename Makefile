@@ -33,8 +33,9 @@ shell: dc-build
 	docker-compose run --entrypoint=bash caching-service
 
 # test1 -- run tests, quickly stopping after first failure
+# Allow dev to use debugger ("-s" option)
 test1: dc-build
-	docker-compose run caching-service -m pytest -x
+	docker-compose run caching-service -m pytest -sx
 
 
 # DOCKER-COMPOSE (DC) COMMANDS
