@@ -5,25 +5,37 @@ all: run
 
 # HIGH LEVEL COMMANDS
 
+# run -- run API server, accessible to host
 run: dc-run
 
+# test -- run functional tests (with Redis)
 test: dc-build
 	docker-compose run caching-service -m pytest
 
+# deploy -- deploy to Heroku
 deploy: d-heroku
 
 
-# XX COMMANDS
+# DEVELOPER COMMANDS
+
+# killall -- stop containers listed in docker-compose.yml and stragglers
+killall:
+	docker-compose down
+	docker ps -q | xargs −−no−run−if−empty docker kill
 
 # run-noredis -- run service alone (no Redis nor Docker-Compose)
 run-noredis: killall
 	docker build -t caching-service .
 	docker run -p 5000:5000 caching-service
 
-# killall -- stop containers listed in docker-compose.yml and stragglers
-killall:
-	docker-compose down
-	docker ps -q | xargs −−no−run−if−empty docker kill
+# shell -- run Bash shell in API container, for debugging
+shell: dc-build
+	docker-compose run --entrypoint=bash caching-service
+
+# test1 -- run tests, quickly stopping after first failure
+test1: dc-build
+	docker-compose run caching-service -m pytest -x
+
 
 # DOCKER-COMPOSE (DC) COMMANDS
 
@@ -34,9 +46,6 @@ dc-build:
 # dc-run -- build and run webapp in local terminal
 dc-run:  dc-build
 	docker-compose run --service caching-service
-
-# dc-shell: dc-build
-# 	docker-compose run --service caching-service bash
 
 
 # DEPLOY (D) COMMANDS

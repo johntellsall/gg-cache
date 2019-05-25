@@ -4,7 +4,7 @@
 # 
 FROM ubuntu:18.04
 
-RUN apt update && apt install -y python3-pip
+RUN apt update && apt install -y netcat python3-pip
 
 WORKDIR /code
 
