@@ -9,8 +9,14 @@ all: run
 run: dc-run
 
 # test -- run functional tests (with Redis)
+# Put Pytest args in "pytest_args" var.
+# Example, run Pytest in verbose mode:
+# make test pytest_args=-v
+pytest_args?=
 test: dc-build
-	docker-compose run caching-service -m pytest
+	docker-compose run caching-service -m pytest ${pytest_args}
+testv:
+	make test pytest_args=--verbose
 
 # deploy -- deploy to Heroku
 deploy: d-heroku
